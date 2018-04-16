@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.view.ViewGroup.LayoutParams;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.CookieManager;
 import android.util.Log;
@@ -62,8 +63,8 @@ public class IAmPortViewManager extends SimpleViewManager<IAmPortWebView> {
         // Fixes broken full-screen modals/galleries due to body
         // height being 0.
         webView.setLayoutParams(
-            new LayoutParams(LayoutParams.MATCH_PARENT,
-            LayoutParams.MATCH_PARENT)
+                new LayoutParams(LayoutParams.MATCH_PARENT,
+                        LayoutParams.MATCH_PARENT)
         );
         CookieManager.getInstance().setAcceptCookie(true); // add default cookie support
         CookieManager.getInstance().setAcceptFileSchemeCookies(true); // add default cookie support
@@ -116,32 +117,33 @@ public class IAmPortViewManager extends SimpleViewManager<IAmPortWebView> {
 
         if(pg.equals("nice")){
 
-          NiceWebViewClient webViewClient = new NiceWebViewClient(activity, view, new UrlLoadingCallBack() {
+            NiceWebViewClient webViewClient = new NiceWebViewClient(activity, view, new UrlLoadingCallBack() {
 
-            @Override
-            public void shouldOverrideUrlLoadingCallBack(String s) {
-              Log.i("iamport", "shouldOverrideUrlLoadingCallBack - " + s);
-              emitPaymentEvent(s, s, s);
-            }
+                @Override
+                public void shouldOverrideUrlLoadingCallBack(String s) {
+                    Log.i("iamport", "shouldOverrideUrlLoadingCallBack - " + s);
+                    emitPaymentEvent(s, s, s);
+                }
 
-          });
-          view.setWebViewClient(webViewClient);
+            });
+            view.setWebViewClient(webViewClient);
+            view.setWebChromeClient(new WebChromeClient());
         }
         else if(pg.equals("kakao")){
 
             view.setWebViewClient(new KakaoWebViewClient(activity, view));
         }
         else if(pg.equals("payco")){
-          PaycoWebViewClient webViewClient = new PaycoWebViewClient(activity, view, new UrlLoadingCallBack() {
+            PaycoWebViewClient webViewClient = new PaycoWebViewClient(activity, view, new UrlLoadingCallBack() {
 
-            @Override
-            public void shouldOverrideUrlLoadingCallBack(String s) {
-              Log.i("iamport", "shouldOverrideUrlLoadingCallBack - " + s);
-              emitPaymentEvent(s, s, s);
-            }
+                @Override
+                public void shouldOverrideUrlLoadingCallBack(String s) {
+                    Log.i("iamport", "shouldOverrideUrlLoadingCallBack - " + s);
+                    emitPaymentEvent(s, s, s);
+                }
 
-          });
-          view.setWebViewClient(webViewClient);
+            });
+            view.setWebViewClient(webViewClient);
         }
     }
 
